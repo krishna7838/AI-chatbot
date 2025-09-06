@@ -1,0 +1,61 @@
+BTech (Bachelor of Technology) is a four-year undergraduate engineering program offered by universities and technical institutes in India and abroad. It is designed to provide theoretical knowledge and practical training in various engineering disciplines.
+
+Eligibility:
+- Students must complete their 10+2 education (PCM stream: Physics, Chemistry, Mathematics).
+- Admission is based on entrance exams such as JEE Main, JEE Advanced, or state-level exams (e.g., KCET, MHT-CET).
+
+Duration:
+- The course is typically divided into 8 semesters over 4 years.
+- It includes classroom lectures, lab sessions, minor and major projects, internships, and seminars.
+
+Common Specializations:
+- Computer Science and Engineering (CSE)
+- Information Technology (IT)
+- Electronics and Communication Engineering (ECE)
+- Mechanical Engineering (ME)
+- Civil Engineering (CE)
+- Electrical Engineering (EE)
+- Artificial Intelligence and Data Science
+- Biotechnology
+- Chemical Engineering
+
+Core Subjects (vary by specialization):
+- Mathematics, Physics, Engineering Mechanics
+- Programming in C/C++, Python
+- Data Structures and Algorithms
+- Database Management Systems
+- Operating Systems
+- Computer Networks
+- Machine Learning and AI
+- Thermodynamics
+- Fluid Mechanics
+- Structural Engineering
+- Digital Electronics
+
+Internships and Projects:
+- Many colleges include industry internships during the 6th or 7th semester.
+- Final year students typically undertake major projects or research work.
+
+Career Opportunities:
+- Software Engineer, Data Analyst, Machine Learning Engineer
+- Civil Engineer, Site Supervisor, Design Engineer
+- Hardware Engineer, Network Engineer
+- Government exams like GATE, ESE, PSU recruitment
+- Higher studies like MTech, MBA, or studying abroad
+
+Skills Developed:
+- Analytical and problem-solving skills
+- Programming and technical proficiency
+- Communication and teamwork
+- Project management
+
+Top Recruiters:
+- TCS, Infosys, Wipro, Google, Amazon, Microsoft, L&T, Tata Steel, ONGC, ISRO
+
+Higher Study Options:
+- MTech (Master of Technology)
+- MS in USA/Germany/Canada
+- MBA (Technology Management, Business Analytics, etc.)
+- Certifications in Data Science, AI, Cloud, etc.
+
+BTech is considered one of the most valuable and versatile degrees for students aiming to build a career in the technical, engineering, or IT domain.

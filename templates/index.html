@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Krishna's Chatbot</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.min.css">
+</head>
+<body>
+    <!-- Left Sidebar -->
+    <div id="sidebar">
+        <h3>Chats</h3>
+        <button onclick="startChat()">+ New Chat</button>
+        <ul id="session-list"></ul>
+
+        <!-- Hidden Document Upload Section -->
+        <div id="upload-section" style="display: none;">
+            <input type="file" id="file-input" multiple />
+            <button id="upload-btn">Upload Documents</button>
+            <div id="upload-status"></div>
+        </div>
+
+        <!-- Uploaded Documents List -->
+        <div id="document-list" style="display: none;">
+            <h3>Uploaded Documents</h3>
+            <ul id="docs"></ul>
+        </div>
+    </div>
+
+    <!-- Right Side Main Chat -->
+    <div id="main">
+        <div id="chat-window">
+            <div class="bot-message">
+                👋 <b>Welcome to Krishna's Chatbot!</b><br>
+                You can ask anything
+            </div>
+        </div>
+
+        <div id="controls">
+            <input type="text" id="message" placeholder="Type your message..." />
+            <button onclick="sendMessage()">Send</button>
+
+            <!-- Mode Switch Dropdown -->
+            <select id="mode-select" onchange="switchMode(this.value)">
+                <option value="2">Global</option>
+                <option value="1">Local</option>
+            </select>
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>
