@@ -4,7 +4,11 @@
     <meta charset="UTF-8">
     <title>Krishna's Chatbot</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.min.css">
+    <link
+  rel="stylesheet"
+  href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+/>
+
 </head>
 <body>
     <!-- Left Sidebar -->
@@ -29,16 +33,27 @@
 
     <!-- Right Side Main Chat -->
     <div id="main">
-        <div id="chat-window">
-            <div class="bot-message">
-                👋 <b>Welcome to Krishna's Chatbot!</b><br>
-                You can ask anything
-            </div>
+        <!-- Fixed welcome message -->
+        <div id="welcome-message" class="bot-message">
+            👋 <b>Welcome to Krishna's Chatbot!</b><br>
+            You can ask anything
         </div>
+
+        <!-- Chat Window (scrollable) -->
+        <div id="chat-window"></div>
+
 
         <div id="controls">
             <input type="text" id="message" placeholder="Type your message..." />
-            <button onclick="sendMessage()">Send</button>
+
+            <!-- Send button (hidden by default) -->
+            <button id="send-btn" style="display: none;" onclick="sendMessage()">
+                <i class="fa-solid fa-arrow-up"></i>
+            </button>
+
+            <!-- Mic button -->
+            <button id="mic-btn"><i class="fa-solid fa-microphone"></i>
+</button>
 
             <!-- Mode Switch Dropdown -->
             <select id="mode-select" onchange="switchMode(this.value)">
@@ -46,7 +61,10 @@
                 <option value="1">Local</option>
             </select>
         </div>
+
     </div>
+
+    
 
     <script src="{{ url_for('static', filename='script.js') }}"></script>
 </body>

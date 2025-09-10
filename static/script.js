@@ -1,4 +1,4 @@
-let currentChat = null;
+let currentChat = null; 
 
 // Load all sessions
 async function loadSessions() {
@@ -42,7 +42,6 @@ async function loadDocuments(sessionId) {
         body: JSON.stringify({ session_id: sessionId })
     });
     const docs = await res.json();
-
     const docSection = document.getElementById("document-list");
     const docList = document.getElementById("docs");
     docList.innerHTML = "";
@@ -73,7 +72,6 @@ async function loadDocuments(sessionId) {
             docList.appendChild(li);
         });
     } else {
-        
         docList.innerHTML = "<li>No documents uploaded yet.</li>";
     }
 }
@@ -82,7 +80,7 @@ async function loadDocuments(sessionId) {
 document.getElementById("upload-btn").onclick = async () => {
     const files = document.getElementById("file-input").files;
     if (!files.length || !currentChat) return alert("Select chat and files!");
-
+    
     const formData = new FormData();
     formData.append("session_id", currentChat);
     for (let f of files) formData.append("files", f);
@@ -109,9 +107,9 @@ async function startChat() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ description, mode: "2" })
     });
-
     const data = await res.json();
     currentChat = data.session_id;
+
     document.getElementById("upload-section").style.display = "block";
     loadSessions();
 }
@@ -136,14 +134,13 @@ async function selectChat(id) {
         body: JSON.stringify({ session_id: id })
     });
     const history = await res.json();
-
     history.forEach(h => {
         appendMessage(h.question, "user");
         appendMessage(h.answer, "bot");
     });
+
     document.getElementById("upload-section").style.display = "block";
-    //auto scroller
-    chatWindow.scrollTop = chatWindow.scrollHeight;
+    chatWindow.scrollTop = chatWindow.scrollHeight; // auto scroller
 
     // Load documents
     await loadDocuments(id);
@@ -152,11 +149,13 @@ async function selectChat(id) {
 // Send message
 async function sendMessage() {
     const input = document.getElementById("message");
-    const text = input.value;
+    const sendBtn = document.getElementById("send-btn");
+    const text = input.value.trim();
     if (!text || !currentChat) return alert("Select a chat first!");
 
     appendMessage(text, "user");
     input.value = "";
+    sendBtn.style.display = "none";
 
     const res = await fetch("/chat", {
         method: "POST",
@@ -164,29 +163,25 @@ async function sendMessage() {
         body: JSON.stringify({ session_id: currentChat, message: text })
     });
     const data = await res.json();
-
     appendMessage(data.bot, "bot");
 }
 
 // Append messages to chat window
 function appendMessage(message, sender = "bot") {
     const chatWindow = document.getElementById("chat-window");
-
     const msgDiv = document.createElement("div");
     msgDiv.classList.add("chat-message");
-
     if (sender === "user") msgDiv.classList.add("user-message-bubble");
     else msgDiv.classList.add("bot-message-bubble");
-
     msgDiv.textContent = message;
     chatWindow.appendChild(msgDiv);
-
     chatWindow.scrollTop = chatWindow.scrollHeight;
 }
 
 // Delete chat
 async function deleteChat(id) {
     if (!confirm("Are you sure you want to delete this chat?")) return;
+
     await fetch(`/delete_session/${id}`, { method: "DELETE" });
 
     if (currentChat === id) {
@@ -200,28 +195,79 @@ async function deleteChat(id) {
 }
 
 // Switch mode
-// async function switchMode(mode) {
-//     if (!currentChat) return alert("Select a chat first!");
-//     await fetch("/switch_mode", {
-//         method: "POST",
-//         headers: { "Content-Type": "application/json" },
-//         body: JSON.stringify({ session_id: currentChat, mode })
-//     });
-// }
-
 async function switchMode(mode) {
     if (!currentChat) return alert("Select a chat first!");
+
     const res = await fetch("/switch_mode", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ session_id: currentChat, mode })
     });
     const data = await res.json();
+
     // Update the span for current chat
     const li = document.querySelector(`#session-list li[data-id='${currentChat}'] span`);
     if (li) li.innerText = `${li.innerText.split('(')[0].trim()} (${data.new_mode})`;
 }
 
+// Speech to text
+let recognition;
+const micBtn = document.getElementById("mic-btn");
+if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
+    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+    recognition = new SpeechRecognition();
+    recognition.continuous = false;
+    recognition.interimResults = true;
+    recognition.lang = "en-US";
+
+    recognition.onstart = () => { 
+        micBtn.innerHTML = '🎙️ Listening...'; 
+    };
+    recognition.onresult = (event) => {
+        let transcript = "";
+        for (let i = event.resultIndex; i < event.results.length; ++i) {
+            transcript += event.results[i][0].transcript;
+        }
+        document.getElementById("message").value = transcript;
+        // Show send button if text appears
+        if(transcript.trim() !== "") document.getElementById("send-btn").style.display = "inline-block";
+    };
+    recognition.onerror = (event) => { 
+        console.error("Speech recognition error", event.error); 
+        micBtn.innerHTML = '<i class="fa-solid fa-microphone"></i>'; 
+    };
+    recognition.onend = () => { 
+        micBtn.innerHTML = '<i class="fa-solid fa-microphone"></i>'; 
+    };
+
+    micBtn.onclick = () => recognition.start();
+} else {
+    micBtn.disabled = true;
+    micBtn.title = "Speech recognition not supported in this browser";
+}
+
+
+
+// Trigger send button on Enter key
+const input = document.getElementById("message");
+const sendBtn = document.getElementById("send-btn");
+
+// Show/Hide Send button depending on input
+input.addEventListener("input", () => {
+    if (input.value.trim() === "") {
+        sendBtn.style.display = "none";   // hide if empty
+    } else {
+        sendBtn.style.display = "inline-block"; // show if text typed
+    }
+});
+
+// Trigger send button on Enter key (only if input has text)
+input.addEventListener("keydown", function (e) {
+    if (e.key === "Enter" && input.value.trim() !== "") {
+        e.preventDefault(); // prevent newline
+        sendBtn.click();    // click Send button
+    }
+});
 
 // Initialize
 window.onload = loadSessions;
